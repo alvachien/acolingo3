@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.alvachien.learning.java.aclingo3.service;
+package com.alvachien.learning.java.acolingo3.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;

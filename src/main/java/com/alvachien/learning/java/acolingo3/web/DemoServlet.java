@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.alvachien.learning.java.aclingo3.web;
+package com.alvachien.learning.java.acolingo3.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alvachien.learning.java.aclingo3.service.DemoEdmProvider;
-import com.alvachien.learning.java.aclingo3.service.DemoEntityCollectionProcessor;
+import com.alvachien.learning.java.acolingo3.service.DemoEdmProvider;
+import com.alvachien.learning.java.acolingo3.service.DemoEntityCollectionProcessor;
 
 import org.apache.olingo.server.api.OData;
 import org.apache.olingo.server.api.ODataHttpHandler;

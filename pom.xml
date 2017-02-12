@@ -15,6 +15,7 @@
 		<javax.version>2.5</javax.version>
 		<odata.version>4.0.0</odata.version>
 		<slf4j.version>1.7.7</slf4j.version>
+		<jpa.version>2.1.0-RC2</jpa.version>
 		<mssqljdbc.version>6.1.0.jre8</mssqljdbc.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,11 +29,20 @@
 			<version>${javax.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>${jpa.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<version>6.1.0.jre8</version>
+			<version>${mssqljdbc.version}</version>
 		</dependency>
+
+		<!-- Begin of Olingo part -->
 		<dependency>
 			<groupId>org.apache.olingo</groupId>
 			<artifactId>odata-server-api</artifactId>
@@ -53,6 +63,7 @@
 			<artifactId>odata-commons-core</artifactId>
 			<version>${odata.version}</version>
 		</dependency>
+		<!-- End of Olingo part -->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -60,7 +71,6 @@
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

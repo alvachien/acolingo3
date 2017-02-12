@@ -1,4 +1,4 @@
-package com.alvachien.learning.java.aclingo3.service.annotations;
+package com.alvachien.learning.java.acolingo3.service.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
