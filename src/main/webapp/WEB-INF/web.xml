@@ -26,7 +26,7 @@
 	<!-- Register the HttpServlet implementation -->
 	<servlet>
 	  <servlet-name>DemoServlet</servlet-name>
-	  <servlet-class>com.alvachien.learning.java.aclingo3.web.DemoServlet</servlet-class>
+	  <servlet-class>com.alvachien.learning.java.acolingo3.web.DemoServlet</servlet-class>
 	  <load-on-startup>1</load-on-startup>
 	</servlet>
 	

@@ -1,0 +1,16 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+  version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+
+<persistence-unit name="acolingo3" transaction-type="RESOURCE_LOCAL">
+    <class>com.alvachien.learning.java.acolingo3.model.FinAccountCategory</class>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+      <property name="javax.persistence.jdbc.url"    value="jdbc:sqlserver://localhost:1433;instance=SQLEXPRESS;databaseName=actestdb;" />
+      <property name="javax.persistence.jdbc.user" value="testuser" />
+      <property name="javax.persistence.jdbc.password" value="Sfin123456" />
+      <property name="eclipselink.ddl-generation" value="create-tables" />
+      <property name="eclipselink.ddl-generation.output-mode" value="database" />
+    </properties>
+  </persistence-unit>  
+</persistence>

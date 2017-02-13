@@ -21,6 +21,8 @@ package com.alvachien.learning.java.acolingo3.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Iterator;
+import javax.persistence.EntityManager;
 
 import org.apache.olingo.commons.api.data.ContextURL;
 import org.apache.olingo.commons.api.data.Entity;
@@ -46,6 +48,8 @@ import org.apache.olingo.server.api.serializer.SerializerResult;
 import org.apache.olingo.server.api.uri.UriInfo;
 import org.apache.olingo.server.api.uri.UriResource;
 import org.apache.olingo.server.api.uri.UriResourceEntitySet;
+import com.alvachien.learning.java.acolingo3.model.*;
+import com.alvachien.learning.java.acolingo3.utils.*;
 
 /**
  * This class is invoked by the Olingo framework when the the OData service is invoked order to display a list/collection of data (entities).
@@ -57,6 +61,7 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
 
   private OData odata;
   private ServiceMetadata serviceMetadata;
+  private EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
   // our processor is initialized with the OData context object
   public void init(OData odata, ServiceMetadata serviceMetadata) {
@@ -103,10 +108,10 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
    */
   private EntityCollection getData(EdmEntitySet edmEntitySet){
 
-    EntityCollection productsCollection = new EntityCollection();
+    EntityCollection rstCollection = new EntityCollection();
     // check for which EdmEntitySet the data is requested
     if(DemoEdmProvider.ES_PRODUCTS_NAME.equals(edmEntitySet.getName())) {
-      List<Entity> productList = productsCollection.getEntities();
+      List<Entity> productList = rstCollection.getEntities();
 
       // add some sample product entities
       final Entity e1 = new Entity()
@@ -132,9 +137,33 @@ public class DemoEntityCollectionProcessor implements EntityCollectionProcessor 
               "19 Optimum Resolution 1024 x 768 @ 85Hz, resolution 1280 x 960"));
       e3.setId(createId("Products", 1));
       productList.add(e3);
+    } else if (DemoEdmProvider.ES_FINACNTCTGY_NAME.equals(edmEntitySet.getName())) {
+      List<Entity> rstList = rstCollection.getEntities();
+      try {
+        entityManager.getTransaction().begin();
+        @SuppressWarnings("unchecked")
+        List<FinAccountCategory> ctgies = entityManager.createQuery("from t_fin_account_ctgy").getResultList();
+        for (Iterator<FinAccountCategory> iterator = ctgies.iterator(); iterator.hasNext();) {
+          FinAccountCategory actgy = (FinAccountCategory) iterator.next();
+          Entity e9 = new Entity()
+            .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, actgy.getID()))
+            .addProperty(new Property(null, "NAME", ValueType.PRIMITIVE, actgy.getName()))
+            .addProperty(new Property(null, "ASSETRFLAG", ValueType.PRIMITIVE, actgy.getAssetFlag()))
+            .addProperty(new Property(null, "COMMENT", ValueType.PRIMITIVE, actgy.getComment()))
+            .addProperty(new Property(null, "SYSFLAG", ValueType.PRIMITIVE, actgy.getSysFlag()))
+            ;
+
+            e9.setId(createId("AcntCategory", actgy.getID()));
+            rstList.add(e9);
+          //System.out.println(FinAccountCategory());
+        }
+        entityManager.getTransaction().commit();
+      } catch (Exception e) {
+        entityManager.getTransaction().rollback();
+      }
     }
 
-    return productsCollection;
+    return rstCollection;
   }
   
   private URI createId(String entitySetName, Object id) {

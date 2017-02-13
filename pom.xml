@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.alvachien.learning.java</groupId>
@@ -10,7 +9,7 @@
 	<name>acolingo3</name>
 	<description>ac olingo 3</description>
 
-    <properties>
+	<properties>
 		<java.version>1.8</java.version>
 		<javax.version>2.5</javax.version>
 		<odata.version>4.0.0</odata.version>
@@ -35,7 +34,7 @@
 			<artifactId>javax.persistence</artifactId>
 			<version>${jpa.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
@@ -80,7 +79,7 @@
 	</dependencies>
 
 	<build>
-        <finalName>ACOlingo3Service</finalName>
+		<finalName>ACOlingo3Service</finalName>
 
 		<plugins>
 			<plugin>
@@ -90,6 +89,14 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<webXml>src\main\webapp\WEB-INF\web.xml</webXml>
 				</configuration>
 			</plugin>
 		</plugins>

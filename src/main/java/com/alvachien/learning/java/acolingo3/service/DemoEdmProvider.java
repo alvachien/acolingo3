@@ -51,9 +51,12 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
   // Entity Types Names
   public static final String ET_PRODUCT_NAME = "Product";
   public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
+  public static final String ET_FINACNTCTGY_NAME = "AccountCategory";
+  public static final FullQualifiedName ET_FINACNTCTGY_FQN = new FullQualifiedName(NAMESPACE, ET_FINACNTCTGY_NAME);
 
   // Entity Set Names
   public static final String ES_PRODUCTS_NAME = "Products";
+  public static final String ES_FINACNTCTGY_NAME = "AccountCategories";
 
   @Override
   public List<CsdlSchema> getSchemas() {
@@ -65,6 +68,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // add EntityTypes
     List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
     entityTypes.add(getEntityType(ET_PRODUCT_FQN));
+    entityTypes.add(getEntityType(ET_FINACNTCTGY_FQN));
     schema.setEntityTypes(entityTypes);
 
     // add EntityContainer
@@ -86,7 +90,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       //create EntityType properties
       CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
       CsdlProperty name = new CsdlProperty().setName("Name").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty  description = new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty description = new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
       // create CsdlPropertyRef for Key element
       CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -95,7 +99,30 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       // configure EntityType
       CsdlEntityType entityType = new CsdlEntityType();
       entityType.setName(ET_PRODUCT_NAME);
-      entityType.setProperties(Arrays.asList(id, name , description));
+      entityType.setProperties(Arrays.asList(id, name, description));
+      entityType.setKey(Collections.singletonList(propertyRef));
+
+      return entityType;
+    } else if(entityTypeName.equals(ET_FINACNTCTGY_NAME)) {
+      //create EntityType properties
+      CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+      CsdlProperty name = new CsdlProperty().setName("NAME").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty assetflg = new CsdlProperty().setName("ASSETFLAG").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty comment = new CsdlProperty().setName("COMMENT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty sysflg = new CsdlProperty().setName("SYSFLAG").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty crtedby = new CsdlProperty().setName("CREATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty crtedat = new CsdlProperty().setName("CREATEDAT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty updedby = new CsdlProperty().setName("UPDATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty updedat = new CsdlProperty().setName("UPDATEDAT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
+      // create CsdlPropertyRef for Key element
+      CsdlPropertyRef propertyRef = new CsdlPropertyRef();
+      propertyRef.setName("ID");
+
+      // configure EntityType
+      CsdlEntityType entityType = new CsdlEntityType();
+      entityType.setName(ET_FINACNTCTGY_NAME);
+      entityType.setProperties(Arrays.asList(id, name, assetflg, comment, sysflg, crtedby, crtedat, updedby, updedat));
       entityType.setKey(Collections.singletonList(propertyRef));
 
       return entityType;
@@ -114,6 +141,12 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         entitySet.setType(ET_PRODUCT_FQN);
 
         return entitySet;
+      } else if (entitySetName.equals(ES_FINACNTCTGY_NAME)) {
+        CsdlEntitySet entitySet = new CsdlEntitySet();
+        entitySet.setName(ES_FINACNTCTGY_NAME);
+        entitySet.setType(ET_FINACNTCTGY_FQN);
+
+        return entitySet;
       }
     }
 
@@ -126,6 +159,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // create EntitySets
     List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
     entitySets.add(getEntitySet(CONTAINER, ES_PRODUCTS_NAME));
+    entitySets.add(getEntitySet(CONTAINER, ES_FINACNTCTGY_NAME));
 
     // create EntityContainer
     CsdlEntityContainer entityContainer = new CsdlEntityContainer();
