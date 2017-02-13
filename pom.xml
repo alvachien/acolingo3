@@ -14,7 +14,8 @@
 		<javax.version>2.5</javax.version>
 		<odata.version>4.0.0</odata.version>
 		<slf4j.version>1.7.7</slf4j.version>
-		<jpa.version>2.1.0-RC2</jpa.version>
+		<jpa.version>2.1.1</jpa.version>
+		<eclipselink.version>2.6.4</eclipselink.version>
 		<mssqljdbc.version>6.1.0.jre8</mssqljdbc.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,6 +34,12 @@
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>javax.persistence</artifactId>
 			<version>${jpa.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>${eclipselink.version}</version>
 		</dependency>
 
 		<dependency>
