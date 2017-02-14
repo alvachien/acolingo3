@@ -21,10 +21,9 @@ package com.alvachien.learning.java.acolingo3.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import com.alvachien.learning.java.acolingo3.model.Constants;
+import com.alvachien.learning.java.acolingo3.model.*;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
@@ -96,7 +95,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       entityType.setKey(Arrays.asList(propertyRef));
       //entityType.setNavigationProperties(navPropList);
     } 
-    else if(entityTypeName.equals(Constants.ET_FINACNTCTGY_NAME)) {
+    else if(entityTypeName.equals(Constants.ET_FINACNTCTGY_FQN)) {
       //create EntityType properties
       CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
       CsdlProperty name = new CsdlProperty().setName("NAME").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
@@ -134,7 +133,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     CsdlEntitySet entitySet = null;
 
-    if(entityContainer.equals(Constants.CONTAINER)){
+    if(entityContainer.equals(Constants.CONTAINER_FQN)){
       if(entitySetName.equals(Constants.ES_PRODUCTS_NAME)){
         entitySet = new CsdlEntitySet();
         entitySet.setName(Constants.ES_PRODUCTS_NAME);
@@ -172,8 +171,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // create EntitySets
     List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-    entitySets.add(getEntitySet(Constants.CONTAINER, Constants.ES_PRODUCTS_NAME));
-    entitySets.add(getEntitySet(Constants.CONTAINER, Constants.ES_FINACNTCTGIES_NAME));
+    entitySets.add(getEntitySet(Constants.CONTAINER_FQN, Constants.ES_PRODUCTS_NAME));
+    entitySets.add(getEntitySet(Constants.CONTAINER_FQN, Constants.ES_FINACNTCTGIES_NAME));
 
     // create EntityContainer
     CsdlEntityContainer entityContainer = new CsdlEntityContainer();
@@ -187,9 +186,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
   public CsdlEntityContainerInfo getEntityContainerInfo(FullQualifiedName entityContainerName) {
 
     // This method is invoked when displaying the service document at e.g. http://localhost:8080/DemoService/DemoService.svc
-    if(entityContainerName == null || entityContainerName.equals(Constants.CONTAINER)){
+    if(entityContainerName == null || entityContainerName.equals(Constants.CONTAINER_FQN)){
       CsdlEntityContainerInfo entityContainerInfo = new CsdlEntityContainerInfo();
-      entityContainerInfo.setContainerName(Constants.CONTAINER);
+      entityContainerInfo.setContainerName(Constants.CONTAINER_FQN);
       
       return entityContainerInfo;
     }

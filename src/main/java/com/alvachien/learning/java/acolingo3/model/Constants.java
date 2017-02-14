@@ -2,13 +2,13 @@ package com.alvachien.learning.java.acolingo3.model;
 
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 
-public class Constants {
+public final class Constants {
   // Service Namespace
   public static final String NAMESPACE = "OData.Demo";
 
   // EDM Container
   public static final String CONTAINER_NAME = "Container";
-  public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
+  public static final FullQualifiedName CONTAINER_FQN = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 
   // Entity Types Names
   public static final String ET_PRODUCT_NAME = "Product";
@@ -19,6 +19,5 @@ public class Constants {
 
   // Entity Set Names
   public static final String ES_PRODUCTS_NAME = "Products";
-  public static final String ES_FINACNTCTGIES_NAME = "AccountCategories";
-    
+  public static final String ES_FINACNTCTGIES_NAME = "AccountCategories";    
 }

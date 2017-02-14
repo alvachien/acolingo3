@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Iterator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -190,9 +191,34 @@ public class Storage {
 	private EntityCollection getFinAccountCategories() {
 		EntityCollection retEntitySet = new EntityCollection();
 
-		for(Entity acntEntity : this.finAccountCategoryList){
-		    retEntitySet.getEntities().add(acntEntity);
-		}
+		EntityManager entityManager = Storage.getEntityManager();
+
+		//entityManager.getTransaction().begin();
+        @SuppressWarnings("unchecked")
+
+        List<FinAccountCategory> ctgies = entityManager.createQuery("from FinAccountCategory fac").getResultList();
+        for (Iterator<FinAccountCategory> iterator = ctgies.iterator(); iterator.hasNext();) {
+          FinAccountCategory actgy = (FinAccountCategory) iterator.next();
+          Entity e9 = new Entity()
+            .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, actgy.getID()))
+            .addProperty(new Property(null, "NAME", ValueType.PRIMITIVE, actgy.getName()))
+            .addProperty(new Property(null, "ASSETRFLAG", ValueType.PRIMITIVE, actgy.getAssetFlag()))
+            .addProperty(new Property(null, "COMMENT", ValueType.PRIMITIVE, actgy.getComment()))
+            .addProperty(new Property(null, "SYSFLAG", ValueType.PRIMITIVE, actgy.getSysFlag()))
+			.addProperty(new Property(null, "CREATEDBY", ValueType.PRIMITIVE, actgy.getCreatedBy()))
+			.addProperty(new Property(null, "CREATEDAT", ValueType.PRIMITIVE, actgy.getCreatedAt()))
+			.addProperty(new Property(null, "UPDATEDBY", ValueType.PRIMITIVE, actgy.getUpdatedBy()))
+			.addProperty(new Property(null, "UPDATEDAT", ValueType.PRIMITIVE, actgy.getUpdatedAt()))
+            ;
+
+          e9.setId(createId("AcntCategory", actgy.getID()));
+		  retEntitySet.getEntities().add(e9);
+        }
+        //entityManager.getTransaction().commit();
+
+		// for(Entity acntEntity : this.finAccountCategoryList){
+		//     retEntitySet.getEntities().add(acntEntity);
+		// }
 
 		return retEntitySet;
 	}
