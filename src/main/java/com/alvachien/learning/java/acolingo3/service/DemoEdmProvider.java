@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.alvachien.learning.java.acolingo3.service;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.alvachien.learning.java.acolingo3.model.Constants;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
@@ -41,34 +43,17 @@ import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
  */
 public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
-  // Service Namespace
-  public static final String NAMESPACE = "OData.Demo";
-
-  // EDM Container
-  public static final String CONTAINER_NAME = "Container";
-  public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
-
-  // Entity Types Names
-  // public static final String ET_PRODUCT_NAME = "Product";
-  // public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
-  public static final String ET_FINACNTCTGY_NAME = "AccountCategory";
-  public static final FullQualifiedName ET_FINACNTCTGY_FQN = new FullQualifiedName(NAMESPACE, ET_FINACNTCTGY_NAME);
-
-  // Entity Set Names
-  //public static final String ES_PRODUCTS_NAME = "Products";
-  public static final String ES_FINACNTCTGY_NAME = "AccountCategories";
-
   @Override
   public List<CsdlSchema> getSchemas() {
 
     // create Schema
     CsdlSchema schema = new CsdlSchema();
-    schema.setNamespace(NAMESPACE);
+    schema.setNamespace(Constants.NAMESPACE);
 
     // add EntityTypes
     List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
-    //entityTypes.add(getEntityType(ET_PRODUCT_FQN));
-    entityTypes.add(getEntityType(ET_FINACNTCTGY_FQN));
+    entityTypes.add(getEntityType(Constants.ET_PRODUCT_FQN));
+    entityTypes.add(getEntityType(Constants.ET_FINACNTCTGY_FQN));
     schema.setEntityTypes(entityTypes);
 
     // add EntityContainer
@@ -84,77 +69,102 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
   @Override
   public CsdlEntityType getEntityType(FullQualifiedName entityTypeName) {
 
+    CsdlEntityType entityType = null;
+
     // this method is called for one of the EntityTypes that are configured in the Schema
-    // if(entityTypeName.equals(ET_PRODUCT_FQN)){
+    if(entityTypeName.equals(Constants.ET_PRODUCT_FQN)){
 
-    //   //create EntityType properties
-    //   CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-    //   CsdlProperty name = new CsdlProperty().setName("Name").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-    //   CsdlProperty description = new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-
-    //   // create CsdlPropertyRef for Key element
-    //   CsdlPropertyRef propertyRef = new CsdlPropertyRef();
-    //   propertyRef.setName("ID");
-
-    //   // configure EntityType
-    //   CsdlEntityType entityType = new CsdlEntityType();
-    //   entityType.setName(ET_PRODUCT_NAME);
-    //   entityType.setProperties(Arrays.asList(id, name, description));
-    //   entityType.setKey(Collections.singletonList(propertyRef));
-
-    //   return entityType;
-    // } 
-    //else 
-    if(entityTypeName.equals(ET_FINACNTCTGY_NAME)) {
       //create EntityType properties
       CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-      CsdlProperty name = new CsdlProperty().setName("NAME").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty assetflg = new CsdlProperty().setName("ASSETFLAG").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty comment = new CsdlProperty().setName("COMMENT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty sysflg = new CsdlProperty().setName("SYSFLAG").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty crtedby = new CsdlProperty().setName("CREATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty crtedat = new CsdlProperty().setName("CREATEDAT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty updedby = new CsdlProperty().setName("UPDATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-      CsdlProperty updedat = new CsdlProperty().setName("UPDATEDAT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty name = new CsdlProperty().setName("Name").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty description = new CsdlProperty().setName("Description").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
       // create CsdlPropertyRef for Key element
       CsdlPropertyRef propertyRef = new CsdlPropertyRef();
       propertyRef.setName("ID");
 
-      // configure EntityType
-      CsdlEntityType entityType = new CsdlEntityType();
-      entityType.setName(ET_FINACNTCTGY_NAME);
-      entityType.setProperties(Arrays.asList(id, name, assetflg, comment, sysflg, crtedby, crtedat, updedby, updedat));
-      entityType.setKey(Collections.singletonList(propertyRef));
+      // // navigation property: many-to-one, null not allowed (product must have a category)
+      // CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName("Category")
+      //     .setType(ET_CATEGORY_FQN).setNullable(false).setPartner("Products");
+      // List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
+      // navPropList.add(navProp);
 
-      return entityType;
+      // configure EntityType
+      entityType = new CsdlEntityType();
+      entityType.setName(Constants.ET_PRODUCT_NAME);
+      entityType.setProperties(Arrays.asList(id, name, description));
+      entityType.setKey(Arrays.asList(propertyRef));
+      //entityType.setNavigationProperties(navPropList);
+    } 
+    else if(entityTypeName.equals(Constants.ET_FINACNTCTGY_NAME)) {
+      //create EntityType properties
+      CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+      CsdlProperty name = new CsdlProperty().setName("NAME").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty assetflg = new CsdlProperty().setName("ASSETFLAG").setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
+      CsdlProperty comment = new CsdlProperty().setName("COMMENT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty sysflg = new CsdlProperty().setName("SYSFLAG").setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
+      CsdlProperty crtedby = new CsdlProperty().setName("CREATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty crtedat = new CsdlProperty().setName("CREATEDAT").setType(EdmPrimitiveTypeKind.Date.getFullQualifiedName());
+      CsdlProperty updedby = new CsdlProperty().setName("UPDATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty updedat = new CsdlProperty().setName("UPDATEDAT").setType(EdmPrimitiveTypeKind.Date.getFullQualifiedName());
+
+      // create CsdlPropertyRef for Key element
+      CsdlPropertyRef propertyRef = new CsdlPropertyRef();
+      propertyRef.setName("ID");
+
+      // // navigation property: one-to-many
+      // CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName("Products")
+      //     .setType(ET_PRODUCT_FQN).setCollection(true).setPartner("Category");
+      // List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
+      // navPropList.add(navProp);
+
+      // configure EntityType
+      entityType = new CsdlEntityType();
+      entityType.setName(Constants.ET_FINACNTCTGY_NAME);
+      entityType.setProperties(Arrays.asList(id, name, assetflg, comment, sysflg, crtedby, crtedat, updedby, updedat));
+      entityType.setKey(Arrays.asList(propertyRef));
+      //entityType.setNavigationProperties(navPropList);
     }
 
-    return null;
+    return entityType;
   }
 
   @Override
   public CsdlEntitySet getEntitySet(FullQualifiedName entityContainer, String entitySetName) {
 
-    if(entityContainer.equals(CONTAINER)){
-      // if(entitySetName.equals(ES_PRODUCTS_NAME)){
-      //   CsdlEntitySet entitySet = new CsdlEntitySet();
-      //   entitySet.setName(ES_PRODUCTS_NAME);
-      //   entitySet.setType(ET_PRODUCT_FQN);
+    CsdlEntitySet entitySet = null;
 
-      //   return entitySet;
-      // } 
-      // else
-      if (entitySetName.equals(ES_FINACNTCTGY_NAME)) {
-        CsdlEntitySet entitySet = new CsdlEntitySet();
-        entitySet.setName(ES_FINACNTCTGY_NAME);
-        entitySet.setType(ET_FINACNTCTGY_FQN);
+    if(entityContainer.equals(Constants.CONTAINER)){
+      if(entitySetName.equals(Constants.ES_PRODUCTS_NAME)){
+        entitySet = new CsdlEntitySet();
+        entitySet.setName(Constants.ES_PRODUCTS_NAME);
+        entitySet.setType(Constants.ET_PRODUCT_FQN);
 
-        return entitySet;
+        // // navigation
+        // CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
+        // navPropBinding.setTarget("Categories"); // the target entity set, where the navigation property points to
+        // navPropBinding.setPath("Category"); // the path from entity type to navigation property
+        // List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
+        // navPropBindingList.add(navPropBinding);
+        // entitySet.setNavigationPropertyBindings(navPropBindingList);
+
+      } 
+      else if (entitySetName.equals(Constants.ES_FINACNTCTGIES_NAME)) {
+        entitySet = new CsdlEntitySet();
+        entitySet.setName(Constants.ES_FINACNTCTGIES_NAME);
+        entitySet.setType(Constants.ET_FINACNTCTGY_FQN);
+
+        // // navigation
+        // CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
+        // navPropBinding.setTarget("Products"); // the target entity set, where the navigation property points to
+        // navPropBinding.setPath("Products"); // the path from entity type to navigation property
+        // List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
+        // navPropBindingList.add(navPropBinding);
+        // entitySet.setNavigationPropertyBindings(navPropBindingList);
       }
     }
 
-    return null;
+    return entitySet;
   }
 
   @Override
@@ -162,12 +172,12 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // create EntitySets
     List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-    //entitySets.add(getEntitySet(CONTAINER, ES_PRODUCTS_NAME));
-    entitySets.add(getEntitySet(CONTAINER, ES_FINACNTCTGY_NAME));
+    entitySets.add(getEntitySet(Constants.CONTAINER, Constants.ES_PRODUCTS_NAME));
+    entitySets.add(getEntitySet(Constants.CONTAINER, Constants.ES_FINACNTCTGIES_NAME));
 
     // create EntityContainer
     CsdlEntityContainer entityContainer = new CsdlEntityContainer();
-    entityContainer.setName(CONTAINER_NAME);
+    entityContainer.setName(Constants.CONTAINER_NAME);
     entityContainer.setEntitySets(entitySets);
 
     return entityContainer;
@@ -177,9 +187,10 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
   public CsdlEntityContainerInfo getEntityContainerInfo(FullQualifiedName entityContainerName) {
 
     // This method is invoked when displaying the service document at e.g. http://localhost:8080/DemoService/DemoService.svc
-    if(entityContainerName == null || entityContainerName.equals(CONTAINER)){
+    if(entityContainerName == null || entityContainerName.equals(Constants.CONTAINER)){
       CsdlEntityContainerInfo entityContainerInfo = new CsdlEntityContainerInfo();
-      entityContainerInfo.setContainerName(CONTAINER);
+      entityContainerInfo.setContainerName(Constants.CONTAINER);
+      
       return entityContainerInfo;
     }
 
