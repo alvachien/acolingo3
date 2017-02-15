@@ -4,7 +4,7 @@ import org.apache.olingo.commons.api.edm.FullQualifiedName;
 
 public final class Constants {
   // Service Namespace
-  public static final String NAMESPACE = "OData.Demo";
+  public static final String NAMESPACE = "AlvaChien.Learning";
 
   // EDM Container
   public static final String CONTAINER_NAME = "Container";
@@ -20,8 +20,12 @@ public final class Constants {
   public static final String ET_FINACNT_NAME = "Account";
   public static final FullQualifiedName ET_FINACNT_FQN = new FullQualifiedName(NAMESPACE, ET_FINACNT_NAME);
 
+  public static final String ET_FINACNTEXTDP_NAME = "AccountExtDP";
+  public static final FullQualifiedName ET_FINACNTEXTDP_FQN = new FullQualifiedName(NAMESPACE, ET_FINACNTEXTDP_NAME);
+
   // Entity Set Names
   public static final String ES_PRODUCTS_NAME = "Products";
   public static final String ES_FINACNTCTGIES_NAME = "AccountCategories";    
   public static final String ES_FINACNTS_NAME = "Accounts";
+  public static final String ES_FINACNTEXTDPS_NAME = "AccountExtDP";
 }
