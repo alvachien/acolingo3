@@ -31,8 +31,8 @@ import javax.persistence.Persistence;
 import javax.ws.rs.core.NewCookie;
 
 import com.alvachien.learning.java.acolingo3.model.*;
-import com.alvachien.learning.java.acolingo3.service.DemoEdmProvider;
-import com.alvachien.learning.java.acolingo3.utils.Util;
+import com.alvachien.learning.java.acolingo3.service.*;
+import com.alvachien.learning.java.acolingo3.utils.*;
 
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
@@ -47,8 +47,10 @@ import org.apache.olingo.server.api.uri.UriParameter;
 
 public class Storage {
 
-	private List<Entity> productList;
-	private List<Entity> finAccountCategoryList;
+	private List<Entity> productList = null;
+	private List<Entity> finAccountCategoryList = null;
+	private List<Entity> finAccountList = null;
+
 	private static final EntityManagerFactory entityManagerFactory;
 	static {
 		try {
@@ -65,9 +67,11 @@ public class Storage {
 	}
 
 	public Storage() {
-		productList = new ArrayList<Entity>();
-		finAccountCategoryList = new ArrayList<Entity>();
+		this.productList = new ArrayList<Entity>();
+		this.finAccountCategoryList = new ArrayList<Entity>();
+		this.finAccountList = new ArrayList<Entity>();
 
+		// Sample data for products
 		initProductSampleData();
 	}
 
@@ -81,6 +85,8 @@ public class Storage {
 			entityColl = getProducts();
 		} else if (edmEntitySet.getName().equals(com.alvachien.learning.java.acolingo3.model.Constants.ES_FINACNTCTGIES_NAME)) {
 			entityColl = getFinAccountCategories();
+		} else if (edmEntitySet.getName().equals(com.alvachien.learning.java.acolingo3.model.Constants.ES_FINACNTS_NAME)) {
+			entityColl = getFinAccounts();
 		}
 
 		return entityColl;
@@ -95,9 +101,11 @@ public class Storage {
 			entity = getProduct(edmEntityType, keyParams);
 		} else if(edmEntityType.getName().equals(com.alvachien.learning.java.acolingo3.model.Constants.ET_FINACNTCTGY_NAME)) {
 			entity = getFinAccountCategory(edmEntityType, keyParams);
+		} else if(edmEntityType.getName().equals(com.alvachien.learning.java.acolingo3.model.Constants.ET_FINACNT_NAME)) {
+			entity = getFinAccount(edmEntityType, keyParams);
 		}
 
-		return null;
+		return entity;
 	}
 
 //   // Navigation
@@ -227,6 +235,55 @@ public class Storage {
 
 		// the list of entities at runtime
 		EntityCollection entitySet = getFinAccountCategories();
+		
+		/*  generic approach  to find the requested entity */
+		Entity requestedEntity = Util.findEntity(edmEntityType, entitySet, keyParams);
+		
+		if(requestedEntity == null){
+			// this variable is null if our data doesn't contain an entity for the requested key
+			// Throw suitable exception
+			throw new ODataApplicationException("Entity for requested key doesn't exist",
+          HttpStatusCode.NOT_FOUND.getStatusCode(), Locale.ENGLISH);
+		}
+
+		return requestedEntity;
+	}
+
+	private EntityCollection getFinAccounts() {
+		EntityCollection retEntitySet = new EntityCollection();
+
+		EntityManager entityManager = Storage.getEntityManager();
+
+		//entityManager.getTransaction().begin();
+        List<FinAccount> accounts = entityManager.createQuery("from FinAccount fa").getResultList();
+        for (Iterator<FinAccount> iterator = accounts.iterator(); iterator.hasNext();) {
+          FinAccount account = (FinAccount) iterator.next();
+          Entity e9 = new Entity()
+            .addProperty(new Property(null, "ID", ValueType.PRIMITIVE, account.getID()))
+            .addProperty(new Property(null, "NAME", ValueType.PRIMITIVE, account.getName()))
+            .addProperty(new Property(null, "COMMENT", ValueType.PRIMITIVE, account.getComment()))
+			.addProperty(new Property(null, "CREATEDBY", ValueType.PRIMITIVE, account.getCreatedBy()))
+			.addProperty(new Property(null, "CREATEDAT", ValueType.PRIMITIVE, account.getCreatedAt()))
+			.addProperty(new Property(null, "UPDATEDBY", ValueType.PRIMITIVE, account.getUpdatedBy()))
+			.addProperty(new Property(null, "UPDATEDAT", ValueType.PRIMITIVE, account.getUpdatedAt()))
+            ;
+
+          e9.setId(createId("AcntCategory", account.getID()));
+		  retEntitySet.getEntities().add(e9);
+        }
+        //entityManager.getTransaction().commit();
+
+		// for(Entity acntEntity : this.finAccountCategoryList){
+		//     retEntitySet.getEntities().add(acntEntity);
+		// }
+
+		return retEntitySet;
+	}
+
+	private Entity getFinAccount(EdmEntityType edmEntityType, List<UriParameter> keyParams) throws ODataApplicationException{
+
+		// the list of entities at runtime
+		EntityCollection entitySet = getFinAccounts();
 		
 		/*  generic approach  to find the requested entity */
 		Entity requestedEntity = Util.findEntity(edmEntityType, entitySet, keyParams);

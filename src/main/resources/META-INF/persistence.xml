@@ -10,7 +10,7 @@
 
     <properties>
       <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-      <property name="javax.persistence.jdbc.url"    value="jdbc:sqlserver://localhost:1433;instance=SQLEXPRESS;databaseName=actestdb;" />
+      <property name="javax.persistence.jdbc.url"    value="jdbc:sqlserver://localhost:1433;instance=SQLEXPRESS;databaseName=achihdb;" />
       <property name="javax.persistence.jdbc.user" value="testuser" />
       <property name="javax.persistence.jdbc.password" value="Sfin123456" />
 

@@ -34,6 +34,7 @@ import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
 import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
 import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
 import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
+import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
 
 /**
  * this class is supposed to declare the metadata of the OData service
@@ -111,11 +112,11 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       CsdlPropertyRef propertyRef = new CsdlPropertyRef();
       propertyRef.setName("ID");
 
-      // // navigation property: one-to-many
-      // CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName("Products")
-      //     .setType(ET_PRODUCT_FQN).setCollection(true).setPartner("Category");
-      // List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
-      // navPropList.add(navProp);
+      // navigation property: one-to-many
+      CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName(Constants.ES_FINACNTS_NAME)
+          .setType(Constants.ET_FINACNT_FQN).setCollection(true).setPartner(Constants.ET_FINACNTCTGY_NAME);
+      List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
+      navPropList.add(navProp);
 
       // configure EntityType
       entityType = new CsdlEntityType();
@@ -123,6 +124,34 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
       entityType.setProperties(Arrays.asList(id, name, assetflg, comment, sysflg, crtedby, crtedat, updedby, updedat));
       entityType.setKey(Arrays.asList(propertyRef));
       //entityType.setNavigationProperties(navPropList);
+    } else if (entityTypeName.equals(Constants.ET_FINACNT_FQN)) {
+      //create EntityType properties
+      CsdlProperty id = new CsdlProperty().setName("ID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+      CsdlProperty ctgyid = new CsdlProperty().setName("CTGYID").setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+      CsdlProperty name = new CsdlProperty().setName("NAME").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty comment = new CsdlProperty().setName("COMMENT").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty owner = new CsdlProperty().setName("OWNER").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty crtedby = new CsdlProperty().setName("CREATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty crtedat = new CsdlProperty().setName("CREATEDAT").setType(EdmPrimitiveTypeKind.Date.getFullQualifiedName());
+      CsdlProperty updedby = new CsdlProperty().setName("UPDATEDBY").setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+      CsdlProperty updedat = new CsdlProperty().setName("UPDATEDAT").setType(EdmPrimitiveTypeKind.Date.getFullQualifiedName());
+
+      // create CsdlPropertyRef for Key element
+      CsdlPropertyRef propertyRef = new CsdlPropertyRef();
+      propertyRef.setName("ID");
+
+      // navigation property: many-to-one, null not allowed (account must have a category)
+      CsdlNavigationProperty navProp = new CsdlNavigationProperty().setName("CTGYID")
+          .setType(Constants.ET_FINACNTCTGY_FQN).setNullable(false).setPartner(Constants.ET_FINACNT_NAME);
+      List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
+      navPropList.add(navProp);
+
+      // configure EntityType
+      entityType = new CsdlEntityType();
+      entityType.setName(Constants.ET_FINACNTCTGY_NAME);
+      entityType.setProperties(Arrays.asList(id, name, ctgyid, comment, owner, crtedby, crtedat, updedby, updedat));
+      entityType.setKey(Arrays.asList(propertyRef));
+      entityType.setNavigationProperties(navPropList);
     }
 
     return entityType;
@@ -152,6 +181,19 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         entitySet = new CsdlEntitySet();
         entitySet.setName(Constants.ES_FINACNTCTGIES_NAME);
         entitySet.setType(Constants.ET_FINACNTCTGY_FQN);
+
+        // // navigation
+        // CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
+        // navPropBinding.setTarget("Products"); // the target entity set, where the navigation property points to
+        // navPropBinding.setPath("Products"); // the path from entity type to navigation property
+        // List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
+        // navPropBindingList.add(navPropBinding);
+        // entitySet.setNavigationPropertyBindings(navPropBindingList);
+      }
+      else if (entitySetName.equals(Constants.ES_FINACNTS_NAME)) {
+        entitySet = new CsdlEntitySet();
+        entitySet.setName(Constants.ES_FINACNTS_NAME);
+        entitySet.setType(Constants.ET_FINACNT_FQN);
 
         // // navigation
         // CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
