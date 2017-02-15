@@ -110,10 +110,11 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
       // Navigation to Account: one-to-many
       CsdlNavigationProperty navProp = new CsdlNavigationProperty()
-          .setName("Accounts")
+          .setName(Constants.NN_FINACCOUNTS)
           .setType(Constants.ET_FINACNT_FQN)
           .setCollection(true)
-          .setPartner(Constants.ET_FINACNTCTGY_NAME);
+      //    .setPartner("Category")
+          ;
       List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
       navPropList.add(navProp);
 
@@ -141,24 +142,23 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
       // Navigation to category: many-to-one, null not allowed (account must have a category)
       CsdlNavigationProperty navProp = new CsdlNavigationProperty()
-          .setName("Category")
+          .setName(Constants.NN_FINACNTCTGY)
           .setType(Constants.ET_FINACNTCTGY_FQN)
-          .setNullable(false)
-          .setPartner(Constants.ET_FINACNT_NAME);
+          .setNullable(false);
+      //    .setPartner("Account");
       List<CsdlNavigationProperty> navPropList = new ArrayList<CsdlNavigationProperty>();
       navPropList.add(navProp);
 
       // Navigate to Ext. DP: 0..1
       navProp = new CsdlNavigationProperty()
-          .setName("ExtInfo")
+          .setName(Constants.NN_FINACNTEXTDP)
           .setType(Constants.ET_FINACNTEXTDP_FQN)
-          .setNullable(true)
-          .setPartner(Constants.ET_FINACNT_NAME);
+          .setNullable(true);
       navPropList.add(navProp);
 
       // configure EntityType
       entityType = new CsdlEntityType();
-      entityType.setName(Constants.ET_FINACNTCTGY_NAME);
+      entityType.setName(Constants.ET_FINACNT_NAME);
       entityType.setProperties(Arrays.asList(id, name, ctgyid, comment, owner, crtedby, crtedat, updedby, updedat));
       entityType.setKey(Arrays.asList(propertyRef));
       entityType.setNavigationProperties(navPropList);
@@ -179,7 +179,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
       // configure EntityType
       entityType = new CsdlEntityType();
-      entityType.setName(Constants.ET_FINACNTCTGY_NAME);
+      entityType.setName(Constants.ET_FINACNTEXTDP_NAME);
       entityType.setProperties(Arrays.asList(id, direct, st, ed, rpty, rdi, dffd, cmt));
       entityType.setKey(Arrays.asList(propertyRef));
     }
@@ -204,8 +204,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         // Navigation to accounts
         CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
-        navPropBinding.setTarget("Accounts"); // the target entity set, where the navigation property points to
-        navPropBinding.setPath("Accounts"); // the path from entity type to navigation property
+        navPropBinding.setTarget(Constants.NN_FINACCOUNTS); // the target entity set, where the navigation property points to
+        navPropBinding.setPath(Constants.ES_FINACNTS_NAME); // the path from entity type to navigation property
         List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
         navPropBindingList.add(navPropBinding);
         entitySet.setNavigationPropertyBindings(navPropBindingList);
@@ -220,15 +220,15 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         // Navigation to category
         CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
-        navPropBinding.setTarget("Category"); // the target entity set, where the navigation property points to
-        navPropBinding.setPath("Category"); // the path from entity type to navigation property
+        navPropBinding.setTarget(Constants.NN_FINACNTCTGY); // the target entity set, where the navigation property points to
+        navPropBinding.setPath(Constants.ES_FINACNTCTGIES_NAME); // the path from entity type to navigation property
         List<CsdlNavigationPropertyBinding> navPropBindingList = new ArrayList<CsdlNavigationPropertyBinding>();
         navPropBindingList.add(navPropBinding);
 
         // Navigate to Ext Info
         navPropBinding = new CsdlNavigationPropertyBinding();
-        navPropBinding.setTarget("ExtInfo"); // the target entity set, where the navigation property points to
-        navPropBinding.setPath("ExtInfo"); // the path from entity type to navigation property
+        navPropBinding.setTarget(Constants.NN_FINACNTEXTDP); // the target entity set, where the navigation property points to
+        navPropBinding.setPath(Constants.ES_FINACNTEXTDPS_NAME); // the path from entity type to navigation property
         navPropBindingList.add(navPropBinding);
         entitySet.setNavigationPropertyBindings(navPropBindingList);
       }

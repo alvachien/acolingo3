@@ -28,4 +28,9 @@ public final class Constants {
   public static final String ES_FINACNTCTGIES_NAME = "AccountCategories";    
   public static final String ES_FINACNTS_NAME = "Accounts";
   public static final String ES_FINACNTEXTDPS_NAME = "AccountExtDP";
+
+  // Navigation Names
+  public static final String NN_FINACCOUNTS = "Accounts";
+  public static final String NN_FINACNTCTGY = "AccountCategory";
+  public static final String NN_FINACNTEXTDP = "ExtendInfo_DP";
 }
